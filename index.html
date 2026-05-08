@@ -368,6 +368,42 @@
 
 }
 
+/* LOGIN GOOGLE */
+
+.google-login{
+
+  margin-top:20px;
+
+}
+
+.google-btn{
+
+  width:100%;
+
+  padding:15px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:white;
+
+  color:#111;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:.3s;
+
+}
+
+.google-btn:hover{
+
+  transform:scale(1.02);
+
+}
+
   </style>
 </head>
 <body>
@@ -423,12 +459,12 @@
         </p>
 
         <a
-          href="javascript:void(0)"
-          class="btn"
-          onclick="openBookingPage()"
-        >
-          Faça seu Agendamento
-        </a>
+       href="javascript:void(0)"
+       class="btn"
+       onclick="openLoginPage()"
+      >
+       Faça seu Agendamento
+       </a>
 
       </div>
 
@@ -510,6 +546,121 @@
   </section>
 
   <!-- PÁGINA DE AGENDAMENTO -->
+
+  <!-- LOGIN -->
+
+  <section
+  class="login-page"
+  id="registerPage"
+  style="display:none;"
+>
+
+  <div class="container">
+
+    <div class="booking-box">
+
+      <h2 class="title">
+        Criar Conta
+      </h2>
+
+      <form id="registerForm">
+
+        <input
+          type="text"
+          id="registerName"
+          placeholder="Seu nome"
+          required
+        >
+
+        <input
+          type="password"
+          id="registerPassword"
+          placeholder="Crie uma senha"
+          required
+        >
+
+        <button type="submit">
+          Cadastrar
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="login-page" id="loginPage">
+
+  <div class="container">
+
+    <div class="booking-box">
+
+      <h2 class="title">
+        Login do Cliente
+      </h2>
+
+      <p class="subtitle">
+        Entre para acessar seus agendamentos.
+      </p>
+
+      <form id="loginForm">
+
+        <input
+          type="text"
+          id="loginName"
+          placeholder="Seu nome"
+          required
+        >
+
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Sua senha"
+          required
+        >
+
+        <button type="submit">
+          Entrar
+        </button>
+
+      </form>
+
+      <button
+  type="button"
+  class="google-btn"
+  onclick="loginWithGoogle()"
+>
+
+  Entrar com Google
+
+</button>
+
+      <div class="google-login">
+
+    <button
+     type="button"
+     class="google-btn"
+   >
+
+    Entrar com Gmail
+
+    </button>
+
+    </div>
+
+      <br>
+
+      <button onclick="showRegister()">
+        Criar Conta
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
 
   <section class="booking-page" id="bookingPage">
 
@@ -764,6 +915,25 @@ function renderAvailableTimes(){
 }
 renderAvailableTimes();
 
+function openLoginPage(){
+
+  home.style.display = 'none';
+
+  services.style.display = 'none';
+
+  bookingPage.style.display = 'none';
+
+  loginPage.style.display = 'block';
+
+  registerPage.style.display = 'none';
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
 function openBookingPage(){
 
   home.style.display = 'none';
@@ -948,6 +1118,91 @@ function deleteAppointment(id){
 
 }
 
+// LOGIN E CADASTRO
+
+const loginPage =
+  document.getElementById('loginPage');
+
+const registerPage =
+  document.getElementById('registerPage');
+
+const registerForm =
+  document.getElementById('registerForm');
+
+const loginForm =
+  document.getElementById('loginForm');
+
+function showRegister(){
+
+  loginPage.style.display = 'none';
+
+  registerPage.style.display = 'block';
+
+}
+
+registerForm.addEventListener('submit', function(e){
+
+  e.preventDefault();
+
+  const name =
+    document.getElementById('registerName').value;
+
+  const password =
+    document.getElementById('registerPassword').value;
+
+  const user = {
+
+    name,
+    password
+
+  };
+
+  localStorage.setItem(
+    'user',
+    JSON.stringify(user)
+  );
+
+  alert('Conta criada com sucesso!');
+
+  registerPage.style.display = 'none';
+
+  loginPage.style.display = 'block';
+
+});
+
+loginForm.addEventListener('submit', function(e){
+
+  e.preventDefault();
+
+  const loginName =
+    document.getElementById('loginName').value;
+
+  const loginPassword =
+    document.getElementById('loginPassword').value;
+
+  const savedUser =
+    JSON.parse(localStorage.getItem('user'));
+
+  if(
+    savedUser &&
+    loginName === savedUser.name &&
+    loginPassword === savedUser.password
+  ){
+
+alert('Login realizado!');
+
+loginPage.style.display = 'none';
+
+openBookingPage();
+
+  }else{
+
+    alert('Nome ou senha incorretos.');
+
+  }
+
+});
+
   </script>
 
 <a
@@ -957,6 +1212,65 @@ function deleteAppointment(id){
 >
   WhatsApp
 </a>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+// Import the functions you need from the SDKs you need
+
+<script>
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyAAOxhb0ZxDVOzVlBclwTpZjqHkjbQ3BX4",
+
+  authDomain: "barbearia-premium-c047f.firebaseapp.com",
+
+  projectId: "barbearia-premium-c047f",
+
+  storageBucket: "barbearia-premium-c047f.firebasestorage.app",
+
+  messagingSenderId: "619190129549",
+
+  appId: "1:619190129549:web:326a4f191a84e73878e3c4"
+
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+function loginWithGoogle(){
+
+  const provider =
+    new firebase.auth.GoogleAuthProvider();
+
+  auth.signInWithPopup(provider)
+
+    .then((result)=>{
+
+      alert(
+        'Login realizado com Google!'
+      );
+
+      loginPage.style.display = 'none';
+
+      openBookingPage();
+
+    })
+
+    .catch((error)=>{
+
+      console.log(error);
+
+      alert(error.message);
+
+    });
+
+}
+
+</script>
 
 </body>
 </html>
