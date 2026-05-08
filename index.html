@@ -303,6 +303,42 @@
       }
 
     }
+    
+/* BOTÃO WHATSAPP */
+
+.whatsapp-button{
+
+  position:fixed;
+
+  right:20px;
+
+  bottom:20px;
+
+  background:#25D366;
+
+  color:white;
+
+  padding:15px 22px;
+
+  border-radius:50px;
+
+  text-decoration:none;
+
+  font-weight:bold;
+
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+
+  z-index:9999;
+
+  transition:.3s;
+
+}
+
+.whatsapp-button:hover{
+
+  transform:scale(1.1);
+
+}
 
   </style>
 </head>
@@ -470,13 +506,13 @@
             required
           >
 
-          <input
-            type="tel"
-            id="phone"
-            placeholder="WhatsApp"
-            required
-          >
-
+         <input
+         type="tel"
+         id="phone"
+         placeholder="(00) 00000-0000"
+         maxlength="15"
+         required
+         >
           <select id="service" required>
 
   <option value="">
@@ -596,6 +632,25 @@ const form =
 
 const appointmentsList =
   document.getElementById('appointmentsList');
+
+  const phoneInput =
+  document.getElementById('phone');
+
+phoneInput.addEventListener('input', function(e){
+
+  let value = e.target.value;
+
+  value = value.replace(/\D/g,'');
+
+  value = value.replace(/^(\d{2})(\d)/g,'($1) $2');
+
+  value = value.replace(/(\d{5})(\d)/,'$1-$2');
+
+  value = value.substring(0,15);
+
+  e.target.value = value;
+
+});
 
 let appointments =
   JSON.parse(localStorage.getItem('appointments')) || [];
@@ -866,6 +921,14 @@ function deleteAppointment(id){
 }
 
   </script>
+
+<a
+  href="https://wa.me/5516999999999"
+  class="whatsapp-button"
+  target="_blank"
+>
+  WhatsApp
+</a>
 
 </body>
 </html>
